@@ -1,8 +1,6 @@
-import { uniqueid } from './utils';
-
 class Store {
   constructor(options) {
-    this.id = uniqueid(8);
+    this.id = Symbol('atomu');
     this.state = options.state;
     this.actions = options.actions;
     this.dependencies = {};
@@ -14,21 +12,22 @@ class Store {
     ctx[this.id] ??= [];
     ctx[this.id].push(namespace);
 
-    // collect dependencies
-    const state = {};
+    const data = {};
 
-    states?.forEach((stateKey) => {
+    states.forEach((stateKey) => {
+      data[stateKey] = this.state[stateKey];
+
+      // collect dependencies
       this.dependencies[stateKey] ??= new Set();
-      state[stateKey] = this.state[stateKey];
       this.dependencies[stateKey].add(ctx);
     });
 
     // injection states
-    ctx.setData?.({ [namespace]: state });
+    ctx.setData({ [namespace]: data });
   }
 
   unregister(ctx, states) {
-    states?.forEach((stateKey) => {
+    states.forEach((stateKey) => {
       const stateDependencies = this.dependencies[stateKey];
       stateDependencies.delete(ctx);
     });
@@ -74,7 +73,7 @@ class Store {
       }, {});
 
       // update states
-      ctx.setData?.(data);
+      ctx.setData(data);
     });
   }
 }
@@ -100,7 +99,10 @@ export function createStore(options) {
     return () => store.unsubscribe(listener);
   };
 
-  const bind = (ctx, states, namespace = '$store') => {
+  const bind = (ctx, states, namespace) => {
+    namespace ??= '$store';
+    states ??= Object.keys(store.getState());
+
     if (!ctx[namespace]) {
       store.register(ctx, states, namespace);
     } else {
