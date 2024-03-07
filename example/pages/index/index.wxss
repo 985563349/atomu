@@ -1,0 +1,17 @@
+page {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+}
+
+.container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+button {
+  margin-bottom: 24px;
+}
