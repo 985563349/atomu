@@ -1,0 +1,8 @@
+<navigation-bar title="WeChat" back="{{false}}" color="black" background="#FFF"></navigation-bar>
+
+<view class="container">
+  <button bind:tap="increment" data-store="$store1">count1: {{ $store1.count }}</button>
+  <button bind:tap="increment" data-store="$store2">count2: {{ $store2.count }}</button>
+</view>
+
+

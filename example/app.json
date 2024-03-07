@@ -1,5 +1,5 @@
 {
-  "pages": ["pages/index/index", "pages/logs/logs"],
+  "pages": ["pages/index/index", "pages/about/about"],
   "window": {
     "navigationBarTextStyle": "black",
     "navigationStyle": "custom"
@@ -11,7 +11,7 @@
         "text": "index"
       },
       {
-        "pagePath": "pages/logs/logs",
+        "pagePath": "pages/about/about",
         "text": "logs"
       }
     ]
