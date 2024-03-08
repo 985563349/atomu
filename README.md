@@ -190,7 +190,7 @@ const store = createStore({
 createLogger 函数有几个配置项：
 
 ```javascript
-const logger = createLogger({
+createLogger({
   collapsed: false, // 自动展开记录的 mutation
   filter(mutation, state) {
     // 若 mutation 需要被记录，就让它返回 true 即可
@@ -216,7 +216,7 @@ const store = createStore({
 createPersistedState 函数有几个配置项：
 
 ```javascript
-const logger = createPersistedState({
+createPersistedState({
   key: 'atomu', // 本地缓存中指定的 key
   filter(mutation, state) {
     // 若 mutation 需要被记录，就让它返回 true 即可
