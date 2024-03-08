@@ -1,4 +1,4 @@
-const { createStore } = require('atomu');
+const { createStore, createLogger } = require('atomu');
 
 const store1 = createStore({
   state: {
@@ -10,6 +10,8 @@ const store1 = createStore({
       set({ count: get().count + 1 });
     },
   },
+
+  plugins: [createLogger()],
 });
 
 const store2 = createStore({

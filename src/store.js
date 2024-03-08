@@ -1,10 +1,13 @@
 class Store {
-  constructor(options) {
+  constructor(options = {}) {
     this.id = Symbol('atomu');
-    this.state = options.state;
-    this.actions = options.actions;
+    this.state = options.state || {};
+    this.actions = options.actions || {};
+    this.plugins = options.plugins || [];
     this.dependencies = {};
     this.listeners = new Set();
+
+    this.plugins.forEach((plugin) => plugin(this));
   }
 
   register(ctx, states, namespace) {
@@ -41,11 +44,11 @@ class Store {
     this.listeners.delete(listener);
   }
 
-  getState() {
+  get() {
     return this.state;
   }
 
-  setState(state) {
+  set(state) {
     // read the dependency of stateKey
     const stateDependencies = [];
 
@@ -76,32 +79,29 @@ class Store {
       ctx.setData(data);
     });
   }
+
+  dispatch(type, payload) {
+    const action = this.actions[type];
+    const get = this.get.bind(this);
+    const set = this.set.bind(this);
+    const context = { get, set };
+
+    return Promise.resolve(action(context, payload)).then(() => {
+      this.listeners.forEach((listener) => {
+        listener({ type, payload }, this.get());
+      });
+    });
+  }
 }
 
 export function createStore(options) {
   const store = new Store(options);
 
-  const dispatch = (type, payload) => {
-    const action = store.actions[type];
-    const get = store.getState.bind(store);
-    const set = store.setState.bind(store);
-    const context = { get, set };
+  const dispatch = store.dispatch.bind(store);
 
-    return Promise.resolve(action(context, payload)).then(() => {
-      store.listeners.forEach((listener) => {
-        listener({ type, payload }, store.getState());
-      });
-    });
-  };
-
-  const subscribe = (listener) => {
-    store.subscribe(listener);
-    return () => store.unsubscribe(listener);
-  };
-
-  const bind = (ctx, states, namespace) => {
+  function bind(ctx, states, namespace) {
     namespace ??= '$store';
-    states ??= Object.keys(store.getState());
+    states ??= Object.keys(store.get());
 
     if (!ctx[namespace]) {
       store.register(ctx, states, namespace);
@@ -109,12 +109,20 @@ export function createStore(options) {
       console.error('the namespace has already been registered.');
     }
 
-    const unbind = () => {
+    function unbind() {
       store.unregister(ctx, states);
-    };
+    }
 
     return { unbind, dispatch };
-  };
+  }
+
+  function subscribe(listener) {
+    store.subscribe(listener);
+
+    return function unsubscribe() {
+      store.unsubscribe(listener);
+    };
+  }
 
   return { bind, dispatch, subscribe };
 }
