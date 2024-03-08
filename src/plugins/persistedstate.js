@@ -1,7 +1,4 @@
-export function createPersistedState({
-  key = 'atomu',
-  actionFilter = (mutation, state) => true,
-} = {}) {
+export function createPersistedState({ key = 'atomu', filter = (mutation, state) => true } = {}) {
   function getState(key) {
     const value = wx.getStorageSync(key);
 
@@ -28,7 +25,7 @@ export function createPersistedState({
     }
 
     context.subscribe((mutation, state) => {
-      if (actionFilter(mutation, state)) {
+      if (filter(mutation, state)) {
         setState(key, state);
       }
     });

@@ -2,7 +2,7 @@ import { deepCopy } from '../utils';
 
 export function createLogger({
   collapsed = true,
-  actionFilter = (mutation, state) => true,
+  filter = (mutation, state) => true,
   logger = console,
 } = {}) {
   return (context) => {
@@ -11,7 +11,7 @@ export function createLogger({
     context.subscribe((mutation, state) => {
       const nextState = deepCopy(state);
 
-      if (actionFilter(mutation, nextState)) {
+      if (filter(mutation, nextState)) {
         const formattedTime = getFormattedTime();
         const message = `mutation ${mutation.type}${formattedTime}`;
 
