@@ -1,4 +1,4 @@
-const { createStore, createLogger } = require('atomu');
+const { createStore, createLogger, createPersistedState } = require('atomu');
 
 const store1 = createStore({
   state: {
@@ -11,7 +11,7 @@ const store1 = createStore({
     },
   },
 
-  plugins: [createLogger()],
+  plugins: [createLogger(), createPersistedState()],
 });
 
 const store2 = createStore({

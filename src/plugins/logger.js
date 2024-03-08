@@ -48,6 +48,7 @@ function endMessage(logger) {
 
 function getFormattedTime() {
   const time = new Date();
+
   return ` @ ${pad(time.getHours(), 2)}:${pad(time.getMinutes(), 2)}:${pad(
     time.getSeconds(),
     2
