@@ -1,5 +1,12 @@
 
 
+## [0.0.4](https://github.com/985563349/atomu/compare/0.0.3...0.0.4) (2024-03-18)
+
+
+### 🐛 Bug Fixes
+
+* fixed issue where original data was overwritten during update ([2606d53](https://github.com/985563349/atomu/commit/2606d537e76dbbff054a196fe183657b344c7e5c))
+
 ## [0.0.3](https://github.com/985563349/atomu/compare/0.0.2...0.0.3) (2024-03-08)
 
 
