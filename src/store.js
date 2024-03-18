@@ -66,9 +66,10 @@ class Store {
 
       // calculate the state that needs to be updated based on the namespace
       const data = namespaces.reduce((prev, namespace) => {
+        prev[namespace] = { ...(ctx.data[namespace] || {}) };
+
         Object.keys(state).forEach((stateKey) => {
-          if (stateKey in ctx.data[namespace]) {
-            prev[namespace] ??= {};
+          if (stateKey in prev[namespace]) {
             prev[namespace][stateKey] = state[stateKey];
           }
         });
