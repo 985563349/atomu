@@ -98,6 +98,7 @@ class Store {
 export function createStore(options) {
   const store = new Store(options);
 
+  const getState = store.get.bind(store);
   const dispatch = store.dispatch.bind(store);
 
   function bind(ctx, states, namespace) {
@@ -125,5 +126,5 @@ export function createStore(options) {
     };
   }
 
-  return { bind, dispatch, subscribe };
+  return { getState, bind, dispatch, subscribe };
 }

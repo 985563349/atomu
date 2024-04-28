@@ -1,17 +1,22 @@
-lockfileVersion: '6.0'
+lockfileVersion: '9.0'
 
 settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-dependencies:
-  atomu:
-    specifier: file:..
-    version: file:..
+importers:
+
+  .:
+    dependencies:
+      atomu:
+        specifier: file:..
+        version: file:..
 
 packages:
 
-  file:..:
+  atomu@file:..:
     resolution: {directory: .., type: directory}
-    name: atomu
-    dev: false
+
+snapshots:
+
+  atomu@file:..: {}
