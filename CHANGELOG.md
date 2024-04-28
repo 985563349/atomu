@@ -1,5 +1,12 @@
 
 
+## [0.0.5](https://github.com/985563349/atomu/compare/0.0.4...0.0.5) (2024-04-28)
+
+
+### ✨ Features
+
+* add getState function ([ca619b8](https://github.com/985563349/atomu/commit/ca619b8d9201bca0c0521311560afab506053733))
+
 ## [0.0.4](https://github.com/985563349/atomu/compare/0.0.3...0.0.4) (2024-03-18)
 
 
