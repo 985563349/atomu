@@ -64,7 +64,7 @@ Component({
 <button wx:bind="increment">count: {{ $store.count }}</button>
 ```
 
-> TIP: 由于小程序框架的限制，状态库无法自动劫持组件的生命周期。因此，在组件销毁后，务必手动进行解绑操作，以避免潜在的内存泄漏问题。
+> TIP: 组件销毁后，请务必手动进行解绑操作，以避免潜在的内存泄漏问题。
 
 ### 携带载荷
 
@@ -146,9 +146,9 @@ Component({
 
 ### bind
 
-- `bind(ctx: Component | Page, stateKey?: string[], namespace?: string)`
+- `bind(ctx: Component | Page, stateKeys?: string[], namespace?: string)`
 
-bind 方法用于将 store 中的状态绑定到组件中，通过 stateKey 参数，可以指定需要绑定的具体状态（若未指定，则默认绑定 store 中的所有状态）。而 namespace 则用于为绑定的状态创建一个独立的空间，确保在状态更新时仅更新该空间内的状态，这在同时绑定多个 store 时尤为实用，有助于避免状态之间的混淆和冲突。
+bind 方法用于将 store 中的状态绑定到组件中，通过 stateKeys 参数，可以指定需要绑定的具体状态（若未指定，则默认绑定 store 中的所有状态）。而 namespace 则用于为绑定的状态创建一个独立的空间，确保在状态更新时仅更新该空间内的状态，这在同时绑定多个 store 时尤为实用，有助于避免状态之间的混淆和冲突。
 
 bind 方法所绑定的状态都会自动存储在组件的 data 对象中，方便在组件内部直接使用这些状态数据：
 
@@ -171,6 +171,16 @@ Component({
     },
   },
 });
+```
+
+### getState
+
+- `getState()`
+
+getState 方法用于在组件外部获取状态：
+
+```javascript
+store.getState();
 ```
 
 ## 插件
