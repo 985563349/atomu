@@ -10,14 +10,14 @@ class Store {
     this.plugins.forEach((plugin) => plugin(this));
   }
 
-  register(ctx, states, namespace) {
+  register(ctx, stateKeys, namespace) {
     // register a namespace
     ctx[this.id] ??= [];
     ctx[this.id].push(namespace);
 
     const data = {};
 
-    states.forEach((stateKey) => {
+    stateKeys.forEach((stateKey) => {
       data[stateKey] = this.state[stateKey];
 
       // collect dependencies
@@ -29,8 +29,8 @@ class Store {
     ctx.setData({ [namespace]: data });
   }
 
-  unregister(ctx, states) {
-    states.forEach((stateKey) => {
+  unregister(ctx, stateKeys) {
+    stateKeys.forEach((stateKey) => {
       const stateDependencies = this.dependencies[stateKey];
       stateDependencies.delete(ctx);
     });
@@ -101,18 +101,18 @@ export function createStore(options) {
   const getState = store.get.bind(store);
   const dispatch = store.dispatch.bind(store);
 
-  function bind(ctx, states, namespace) {
+  function bind(ctx, stateKeys, namespace) {
     namespace ??= '$store';
-    states ??= Object.keys(store.get());
+    stateKeys ??= Object.keys(store.get());
 
     if (!ctx[namespace]) {
-      store.register(ctx, states, namespace);
+      store.register(ctx, stateKeys, namespace);
     } else {
       console.error('the namespace has already been registered.');
     }
 
     function unbind() {
-      store.unregister(ctx, states);
+      store.unregister(ctx, stateKeys);
     }
 
     return { unbind, dispatch };
